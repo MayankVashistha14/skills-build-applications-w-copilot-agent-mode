@@ -2,6 +2,9 @@ import express from 'express';
 import './config/database.js';
 import { User } from './models/User.js';
 import { Activity } from './models/Activity.js';
+import { Leaderboard } from './models/Leaderboard.js';
+import { Team } from './models/Team.js';
+import { Workout } from './models/Workout.js';
 
 const app = express();
 const port = Number(process.env.PORT || 8000);
@@ -24,6 +27,21 @@ app.get('/api/users', async (_request, response) => {
 app.get('/api/activities', async (_request, response) => {
   const activities = await Activity.find().lean();
   response.json(activities);
+});
+
+app.get('/api/leaderboard', async (_request, response) => {
+  const leaderboard = await Leaderboard.find().sort({ rank: 1 }).lean();
+  response.json(leaderboard);
+});
+
+app.get('/api/teams', async (_request, response) => {
+  const teams = await Team.find().lean();
+  response.json(teams);
+});
+
+app.get('/api/workouts', async (_request, response) => {
+  const workouts = await Workout.find().lean();
+  response.json(workouts);
 });
 
 app.listen(port, () => {
